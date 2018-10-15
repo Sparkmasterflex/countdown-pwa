@@ -19,9 +19,20 @@ export default class Timer extends React.Component {
   }
 
   render() {
-    var diff_obj = Calculate(this.props.when, this.state.now);
+    var diff_obj = Calculate(this.props.when, this.state.now),
+        klass = style.timer;
+
+    switch(this.props.size) {
+      case 'large':
+        klass += ` ${style.large}`;
+        break;
+      case 'normal':
+        klass += ` ${style.normal}`;
+        break;
+    }
+
     return(
-      <div className={style.timer}>
+      <div className={klass}>
         <div className={style.day}>{diff_obj.days}</div>
         <div className={style.hour}>{diff_obj.hours}</div>
         <div className={style.minute}>{diff_obj.minutes}</div>

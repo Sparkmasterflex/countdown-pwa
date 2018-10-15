@@ -20,7 +20,7 @@ export default class Item extends React.Component {
       <Link to={path} className={style.item}>
         <div className={style.title}>{this.state.name}</div>
         <div className={style.date}>{this.format(date)}</div>
-        <Timer when={date} />
+        <Timer size="normal" when={date} />
       </Link>
     );
   }

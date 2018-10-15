@@ -1,27 +1,16 @@
-[
-  {
-    "slug": "japan-trip",
-    "title": "Japan Trip",
-    "description": "Jane and I are going to Japan with the guys!",
-    "when": {
-      "year": 2018,
-      "month": 10,
-      "day": 29,
-      "hour": 11,
-      "minute": 5
-    }
-  },
-
-  {
-    "slug": "vampire-coast",
-    "title": "Vampire Coast DLC",
-    "description": "Vampire Coast DLC released for Total War Warhammer II",
-    "when": {
-      "year": 2018,
-      "month": 11,
-      "day": 8,
-      "hour": 0,
-      "minute": 0
-    }
-  }
-]
+{
+  "months": [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ]
+}

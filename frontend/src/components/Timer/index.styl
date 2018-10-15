@@ -1,15 +1,30 @@
+@import '../../colors.styl'
+
 .timer
   display flex
   width 100%
   margin 5px 0
   padding 5px 0
 
+
+.timer
+  &.large
+    padding 0 20px
+
+    .day, .hour,
+    .minute, .second
+      font-size 48px
+
+  &.normal
+    .day, .hour,
+    .minute, .second
+      font-size 36px
+
 .day, .hour,
 .minute, .second
-  font-size 36px
+  color alt-text-color
 
 .day
-  // flex 4
   margin-right 15px
 
   &:after
@@ -19,8 +34,3 @@
 .hour, .minute
   &:after
     content ":"
-
-// .hour,
-// .minute,
-// .second
-//   max-width 50px
