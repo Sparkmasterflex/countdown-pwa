@@ -41,6 +41,7 @@ def countdowns():
 @app.route("/countdowns/<slug>")
 def countdown(slug):
   countdown = db.countdowns.find_one({"slug": slug})
+  countdown.pop("_id", None)
   return jsonify(countdown)
 
 if __name__ == "__main__":
