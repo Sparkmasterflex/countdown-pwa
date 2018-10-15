@@ -21,7 +21,7 @@ export default class CountDowns extends React.Component {
     return (
       <div className={style.list}>
         {this.display_loading()}
-        {this.display_data()}
+        {this.render_countdowns()}
       </div>
     )
   }
@@ -34,7 +34,7 @@ export default class CountDowns extends React.Component {
     }
   }
 
-  display_data() {
+  render_countdowns() {
     if(this.state.data) {
       return this.state.data.map( (item, index) => {
         return <Item key={item.slug} data={item} index={index} />
