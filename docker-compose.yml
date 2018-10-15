@@ -1,0 +1,43 @@
+version: '3'
+services:
+  web:
+    container_name: pwa-js
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    depends_on:
+      - server
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./frontend:/web
+
+  server:
+    container_name: pwa-python
+    build:
+      context: ./python
+      dockerfile: Dockerfile
+    depends_on:
+      - mongo
+    links:
+      - mongo
+    environment:
+      - DEBUG=True
+      - FLASK_DEBUG=1
+      - DATABASE=countdown_development
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./python:/server
+
+  mongo:
+    container_name: pwa-db
+    image: mongo:latest
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+    volumes:
+      - ./data/db:/data/db
+    ports:
+      - 27017:27017
+    command: mongod --smallfiles --logpath=/dev/null # --quiet

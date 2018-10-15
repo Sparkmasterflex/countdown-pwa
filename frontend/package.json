@@ -1,0 +1,23 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "pwa export --routes /about,/blog,/",
+    "start": "sirv build -s",
+    "watch": "pwa watch -H 0.0.0.0"
+  },
+  "dependencies": {
+    "ganalytics": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "react-loadable": "latest",
+    "react-router-dom": "latest",
+    "sirv-cli": "latest"
+  },
+  "devDependencies": {
+    "@pwa/cli": "latest",
+    "@pwa/plugin-offline": "latest",
+    "@pwa/preset-react": "latest",
+    "stylus": "latest",
+    "stylus-loader": "latest"
+  }
+}

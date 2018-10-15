@@ -1,0 +1,26 @@
+.timer
+  display flex
+  width 100%
+  margin 5px 0
+  padding 5px 0
+
+.day, .hour,
+.minute, .second
+  font-size 36px
+
+.day
+  // flex 4
+  margin-right 15px
+
+  &:after
+    content "days"
+    margin-left 10px
+
+.hour, .minute
+  &:after
+    content ":"
+
+// .hour,
+// .minute,
+// .second
+//   max-width 50px
