@@ -34,6 +34,7 @@ class App extends React.Component {
 					<Route path="/countdowns/new" exact component={ CountDownNew } />
 					<Route path="/countdowns/:slug" component={ CountDownShow } />
 				</main>
+				<Nav current={this.props.match} />
 			</div>
 		);
 	}
