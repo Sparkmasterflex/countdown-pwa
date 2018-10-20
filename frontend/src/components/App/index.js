@@ -32,7 +32,7 @@ class App extends React.Component {
 				<main className={ style.wrapper }>
 					<Route path="/" exact component={ Home } />
 					<Route path="/countdowns/new" exact component={ CountDownNew } />
-					<Route path="/countdowns/:slug" component={ CountDownShow } />
+					<Route exact path="/:slug" component={ CountDownShow } />
 				</main>
 				<Nav current={this.props.match} />
 			</div>

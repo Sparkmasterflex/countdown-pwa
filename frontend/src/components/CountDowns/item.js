@@ -14,7 +14,7 @@ export default class Item extends React.Component {
   render() {
     var when = this.state.when,
         date = new Date(when.year, (when.month-1), when.day, when.hour, when.minute),
-        path = `/countdowns/${this.state.slug}`
+        path = `/${this.state.slug}`
 
     return(
       <Link to={path} className={style.item}>

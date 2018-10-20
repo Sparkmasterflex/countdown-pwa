@@ -4,16 +4,32 @@
 		"selected_items":
 		[
 			[
+				"com",
+				"componentDidMount"
+			],
+			[
+				"fa",
+				"faPlusCircle"
+			],
+			[
+				"render",
+				"render_countdown"
+			],
+			[
+				"count",
+				"countdowns"
+			],
+			[
+				"Coun",
+				"CountDown"
+			],
+			[
 				"displ",
 				"display_loading"
 			],
 			[
 				"Count",
 				"CountDowns"
-			],
-			[
-				"Coun",
-				"CountDownNew"
 			],
 			[
 				"jso",
@@ -336,10 +352,6 @@
 				"open_advanced_controls"
 			],
 			[
-				"count",
-				"count_neighbors"
-			],
-			[
 				"alive",
 				"alive_cell"
 			]
@@ -348,113 +360,19 @@
 	"buffers":
 	[
 		{
-			"contents": "import React from 'react';\nimport Loadable from 'react-loadable';\nimport { HMR } from '@pwa/preset-react';\nimport { Route, withRouter } from 'react-router-dom';\nimport Nav from '@components/Nav';\n// import Footer from '@components/Footer';\nimport style from './index.styl';\n\n// Route-Split Components\nconst loading = () => <div>Loading...</div>;\nconst load = loader => Loadable({ loader, loading });\n\nconst Home = load(() => import('@pages/Home'));\nconst CountDownNew = load(() => import('@pages/CountDowns/New'));\nconst CountDownShow = load(() => import('@pages/CountDowns/Show'));\n\nclass App extends React.Component {\n\tcomponentDidMount() {\n\t\tif (process.env.NODE_ENV === 'production') {\n\t\t\tthis.props.history.listen(obj => {\n\t\t\t\tif (window.ga) ga.send('pageview', { dp:obj.pathname });\n\t\t\t});\n\t\t}\n\t}\n\n\trender() {\n\t\treturn (\n\t\t\t<div className={ style.app }>\n\t\t\t\t<header className={style.header}>\n\t\t\t\t  <h3 className={style.h3}>PWA Countdowns</h3>\n\t\t\t\t</header>\n\t\t\t\t<main className={ style.wrapper }>\n\t\t\t\t\t<Route path=\"/\" exact component={ Home } />\n\t\t\t\t\t<Route path=\"/countdowns/new\" exact component={ CountDownNew } />\n\t\t\t\t\t<Route path=\"/countdowns/:title\" component={ CountDownShow } />\n\t\t\t\t</main>\n\t\t\t</div>\n\t\t);\n\t}\n}\n\nexport default HMR(withRouter(App), module);\n",
-			"file": "src/components/App/index.js",
-			"file_size": 1269,
-			"file_write_time": 131833461790000000,
+			"file": "frontend/src/components/CountDowns/form.js",
 			"settings":
 			{
-				"buffer_size": 1269,
+				"buffer_size": 1632,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"contents": "@import 'colors.styl'\n@import url('https://fonts.googleapis.com/css?family=Ubuntu:400,700')\n\nbody\n  padding 0\n  margin 0\n  background base-blue\n  color text-color\n  font-family 'Ubuntu', sans-serif\n",
-			"file": "src/index.styl",
-			"file_size": 198,
-			"file_write_time": 131833499190000000,
+			"file": "frontend/src/components/CountDowns/index.js",
 			"settings":
 			{
-				"buffer_size": 198,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "import React from 'react';\nimport Code from '@components/Code';\nimport { HMR } from '@pwa/preset-react';\nimport Window from '@components/Window';\nimport CountDowns from '@components/CountDowns';\n// import Item from '@components/CountDowns/item';\nimport style from './index.styl';\n\nimport data from '../../lib/data.json';\n\nfunction Home() {\n  return (\n    <div className={style.container}>\n      <h1>Count Downs</h1>\n      <CountDowns />\n    </div>\n  );\n}\n\nexport default HMR(Home, module);\n",
-			"file": "src/pages/Home/index.js",
-			"file_size": 490,
-			"file_write_time": 131836220250000000,
-			"settings":
-			{
-				"buffer_size": 490,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "import React from 'react';\nimport Timer from '@components/Timer';\n\nimport style from './index.styl';\n\n\nexport default class Item extends React.Component {\n  constructor(props) {\n    super(props);\n    this.state = this.props.data;\n  }\n\n  render() {\n    var when = this.state.when,\n        date = new Date(when.year, (when.month-1), when.day, when.hour, when.minute);\n\n    return(\n      <div className={style.item}>\n        <div className={style.title}>{this.state.title}</div>\n        <div className={style.date}>{this.format(date)}</div>\n        <Timer when={date} />\n      </div>\n    );\n  }\n\n  format(date) {\n    var month, day, year;\n    month = date.getMonth() + 1;\n    day = date.getDate();\n    year = date.getFullYear();\n\n    return `${month}/${day}/${year}`;\n  }\n}\n",
-			"file": "src/components/CountDowns/item.js",
-			"file_size": 771,
-			"file_write_time": 131836222410000000,
-			"settings":
-			{
-				"buffer_size": 771,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "import os\nfrom flask import Flask\nfrom flask import jsonify\nfrom flask_cors import CORS\nfrom couchdb import Server\n\napp = Flask(__name__)\n\ndb_user = os.getenv('DB_USER')\ndb_pass = os.getenv('DB_PASS')\ndb_url = 'http://{}:{}@localhost:5984/'.format(db_user, db_pass)\n\n# server = Server(db_url)\n# db = server[os.getenv('DATABASE')]\n\ncors = CORS(app, resources={r\"*\": {\"origins\": \"*\"}})\n\n@app.route(\"/\")\ndef countdowns():\n  return \"you fucking bastard!!!\"\n  # return os.getenv('DATABASE')\n\n\nif __name__ == \"__main__\":\n  app.run(host='0.0.0.0')\n",
-			"file": "countdown.py",
-			"file_size": 541,
-			"file_write_time": 131838774780000000,
-			"settings":
-			{
-				"buffer_size": 541,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "Dockerfile",
-			"settings":
-			{
-				"buffer_size": 336,
-				"encoding": "UTF-8",
-				"line_ending": "Unix",
-				"name": "FROM python:2.7"
-			}
-		},
-		{
-			"file": "docker-compose.yml",
-			"settings":
-			{
-				"buffer_size": 309,
-				"encoding": "UTF-8",
-				"line_ending": "Unix",
-				"name": "version: '2'"
-			}
-		},
-		{
-			"contents": "  return jsonify([\n    {\n      \"slug\": \"japan-trip\",\n      \"title\": \"Japan Trip\",\n      \"description\": \"Jane and I are going to Japan with the guys!\",\n      \"when\": {\n        \"year\": 2018,\n        \"month\": 10,\n        \"day\": 29,\n        \"hour\": 11,\n        \"minute\": 5\n      }\n    },\n\n    {\n      \"slug\": \"vampire-coast\",\n      \"title\": \"Vampire Coast DLC\",\n      \"description\": \"Vampire Coast DLC released for Total War Warhammer II\",\n      \"when\": {\n        \"year\": 2018,\n        \"month\": 11,\n        \"day\": 8,\n        \"hour\": 0,\n        \"minute\": 0\n      }\n    }\n  ])\n",
-			"settings":
-			{
-				"buffer_size": 571,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "DEBUG = True\nDB_USER = \"keith\"\nDB_PASS = \"password\"\nDATABASE = 'countdown_development'\n",
-			"file": "config.cfg",
-			"file_size": 87,
-			"file_write_time": 131836287220000000,
-			"settings":
-			{
-				"buffer_size": 87,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "[[source]]\nurl = \"https://pypi.org/simple\"\nverify_ssl = true\nname = \"pypi\"\n\n[packages]\nflask-cors = \"*\"\nflask = \"*\"\ncouchdb = \"*\"\n\n[dev-packages]\n\n[requires]\npython_version = \"2.7.14\"\n",
-			"file": "Pipfile",
-			"file_size": 184,
-			"file_write_time": 131836257130000000,
-			"settings":
-			{
-				"buffer_size": 184,
+				"buffer_size": 939,
 				"line_ending": "Unix"
 			}
 		}
@@ -608,34 +526,62 @@
 	},
 	"expanded_folders":
 	[
-		"/Users/keithraymond/sparkmasterflex/countdown-pwa"
+		"/Users/keithraymond/sparkmasterflex/countdown-pwa",
+		"/Users/keithraymond/sparkmasterflex/countdown-pwa/frontend",
+		"/Users/keithraymond/sparkmasterflex/countdown-pwa/frontend/src",
+		"/Users/keithraymond/sparkmasterflex/countdown-pwa/frontend/src/components",
+		"/Users/keithraymond/sparkmasterflex/countdown-pwa/frontend/src/components/CountDowns",
+		"/Users/keithraymond/sparkmasterflex/countdown-pwa/frontend/src/pages",
+		"/Users/keithraymond/sparkmasterflex/countdown-pwa/frontend/src/pages/CountDowns"
 	],
 	"file_history":
 	[
+		"/Users/keithraymond/sparkmasterflex/countdown-pwa/frontend/src/colors.styl",
+		"/Users/keithraymond/sparkmasterflex/countdown-pwa/frontend/src/components/CountDowns/show.js",
+		"/Users/keithraymond/sparkmasterflex/countdown-pwa/frontend/src/pages/CountDowns/New/index.styl",
+		"/Users/keithraymond/sparkmasterflex/countdown-pwa/frontend/src/components/CountDowns/index.styl",
+		"/Users/keithraymond/sparkmasterflex/countdown-pwa/frontend/src/components/Nav/index.js",
+		"/Users/keithraymond/sparkmasterflex/countdown-pwa/frontend/src/pages/CountDowns/New/index.js",
+		"/Users/keithraymond/sparkmasterflex/countdown-pwa/frontend/src/components/Timer/index.js",
+		"/Users/keithraymond/sparkmasterflex/countdown-pwa/frontend/src/components/Timer/index.styl",
+		"/Users/keithraymond/sparkmasterflex/countdown-pwa/frontend/src/pages/CountDowns/Show/index.js",
+		"/Users/keithraymond/sparkmasterflex/countdown-pwa/frontend/src/components/CountDowns/item.js",
+		"/Users/keithraymond/sparkmasterflex/countdown-pwa/frontend/src/components/App/index.js",
+		"/Users/keithraymond/sparkmasterflex/countdown-pwa/frontend/src/components/Nav/index.styl",
+		"/Users/keithraymond/sparkmasterflex/countdown-pwa/frontend/package.json",
+		"/Users/keithraymond/sparkmasterflex/countdown-pwa/frontend/src/lib/data.json",
+		"/Users/keithraymond/sparkmasterflex/countdown-pwa/frontend/src/components/CountDowns/index.js",
+		"/Users/keithraymond/sparkmasterflex/countdown-pwa/python/countdown.py",
+		"/Users/keithraymond/sparkmasterflex/countdown-pwa/frontend/src/pages/Home/index.js",
+		"/Users/keithraymond/sparkmasterflex/countdown-pwa/docker-compose.yml",
+		"/Users/keithraymond/sparkmasterflex/countdown-pwa/frontend/src/components/App/index.styl",
+		"/Users/keithraymond/sparkmasterflex/countdown-pwa/src/components/App/index.js",
+		"/Users/keithraymond/sparkmasterflex/countdown-pwa/src/index.styl",
+		"/Users/keithraymond/sparkmasterflex/countdown-pwa/src/pages/Home/index.js",
+		"/Users/keithraymond/sparkmasterflex/countdown-pwa/src/components/CountDowns/item.js",
+		"/Users/keithraymond/sparkmasterflex/countdown-pwa/Pipfile",
+		"/Users/keithraymond/sparkmasterflex/countdown-pwa/config.cfg",
+		"/Users/keithraymond/sparkmasterflex/countdown-pwa/countdown.py",
+		"/Users/keithraymond/sparkmasterflex/countdown-pwa/Dockerfile",
 		"/Users/keithraymond/sparkmasterflex/countdown-pwa/requirements.txt",
 		"/Users/keithraymond/sparkmasterflex/countdown-pwa/src/components/CountDowns/index.js",
 		"/Users/keithraymond/sparkmasterflex/countdown-pwa/src/components/App/index.styl",
 		"/Users/keithraymond/sparkmasterflex/countdown-pwa/src/colors.styl",
 		"/Users/keithraymond/sparkmasterflex/countdown-pwa/src/components/Nav/index.styl",
 		"/Users/keithraymond/sparkmasterflex/countdown-pwa/src/pages/Home/index.styl",
-		"/Users/keithraymond/sparkmasterflex/countdown-pwa/Pipfile",
 		"/Users/keithraymond/sparkmasterflex/countdown-pwa/setup.py",
 		"/Users/keithraymond/sparkmasterflex/countdown-pwa/__init__.py",
 		"/Users/keithraymond/sparkmasterflex/countdown-pwa/src/lib/data.json",
 		"/Users/keithraymond/sparkmasterflex/countdown-pwa/src/components/Nav/index.js",
 		"/Users/keithraymond/sparkmasterflex/countdown-pwa/src/components/App/colors.styl",
-		"/Users/keithraymond/sparkmasterflex/countdown-pwa/src/components/CountDowns/item.js",
 		"/Users/keithraymond/sparkmasterflex/countdown-pwa/src/components/CountDowns/index.styl",
 		"/Users/keithraymond/sparkmasterflex/countdown-pwa/src/components/Timer/index.styl",
 		"/Users/keithraymond/sparkmasterflex/countdown-pwa/src/components/Timer/index.js",
-		"/Users/keithraymond/sparkmasterflex/countdown-pwa/src/index.styl",
-		"/Users/keithraymond/sparkmasterflex/countdown-pwa/src/pages/Home/index.js",
 		"/Users/keithraymond/sparkmasterflex/countdown-pwa/countdown-pwa.sublime-project",
 		"/Users/keithraymond/sparkmasterflex/countdown-pwa/src/lib/Calculate/index.js",
 		"/Users/keithraymond/sparkmasterflex/countdown-pwa/src/pages/CountDowns/New/index.js",
 		"/Users/keithraymond/sparkmasterflex/countdown-pwa/src/components/Hero/index.js",
 		"/Users/keithraymond/sparkmasterflex/countdown-pwa/src/lib/calculate.js",
-		"/Users/keithraymond/sparkmasterflex/countdown-pwa/src/components/App/index.js",
 		"/Users/keithraymond/sparkmasterflex/totalwar-replays/totalwar-replays.sublime-project",
 		"/Users/keithraymond/sparkmasterflex/countdown-pwa/node_modules/home-or-tmp/index.js",
 		"/Users/keithraymond/sparkmasterflex/countdown-pwa/src/pages/CountDowns/Show/index.js",
@@ -717,39 +663,19 @@
 		"/Users/keithraymond/sparkmasterflex/corporate_ladder_hell/objects/obj_menu/Keyboard_13.gml",
 		"/Users/keithraymond/sparkmasterflex/corporate_ladder_hell/scripts/get_object/get_fighter_object.gml",
 		"/Users/keithraymond/sparkmasterflex/Birthday-Problem/Dockerfile",
-		"/Users/keithraymond/sparkmasterflex/Birthday-Problem/requirements.txt",
-		"/Users/keithraymond/sparkmasterflex/corporate_ladder_hell/objects/obj_character_list/obj_character_list.yy",
-		"/Users/keithraymond/sparkmasterflex/corporate_ladder_hell/corporate_ladder_hell.yyp-backup",
-		"/Users/keithraymond/Desktop/quad_vids.rb",
-		"/Users/keithraymond/sparkmasterflex/corporate_ladder_hell/corporate_ladder_hell",
-		"/Users/keithraymond/sparkmasterflex/corporate_ladder_hell/objects/obj_character/Draw_0.gml",
-		"/Users/keithraymond/sparkmasterflex/corporate_ladder_hell/objects/obj_menu/Create_0.gml",
-		"/Users/keithraymond/sparkmasterflex/corporate_ladder_hell/objects/obj_menu/Step_0.gml",
-		"/Users/keithraymond/sparkmasterflex/corporate_ladder_hell/objects/obj_menu/Draw_0.gml",
-		"/Users/keithraymond/sparkmasterflex/corporate_ladder_hell/objects/obj_character_list/Step_0.gml",
-		"/Users/keithraymond/Desktop/site/index.html",
-		"/Users/keithraymond/sparkmasterflex/corporate_ladder_hell/objects/obj_border_rectangle/Draw_0.gml",
-		"/Users/keithraymond/sparkmasterflex/corporate_ladder_hell/objects/character_list/Draw_0.gml",
-		"/Users/keithraymond/sparkmasterflex/corporate_ladder_hell/objects/character_list/Create_0.gml",
-		"/Users/keithraymond/sparkmasterflex/corporate_ladder_hell/objects/border_rectangle/Draw_0.gml",
-		"/Users/keithraymond/Desktop/sample.yyp",
-		"/Users/keithraymond/Desktop/desktop/quad_vids.rb",
-		"/Users/keithraymond/sparkmasterflex/corporate_ladder_hell/corporate_ladder_hell.yyp-back2",
-		"/Users/keithraymond/sparkmasterflex/corporate_ladder_hell/clh.yyp",
-		"/Users/keithraymond/Desktop/diff.txt",
-		"/Users/keithraymond/Desktop/notes-from-jeff",
-		"/Users/keithraymond/realgeeks/lead_manager/app/assets/stylesheets/modules/_checklists.scss",
-		"/Users/keithraymond/realgeeks/lead_manager/app/models/checklist.rb"
+		"/Users/keithraymond/sparkmasterflex/Birthday-Problem/requirements.txt"
 	],
 	"find":
 	{
-		"height": 26.0
+		"height": 27.0
 	},
 	"find_in_files":
 	{
 		"height": 101.0,
 		"where_history":
 		[
+			"*.styl",
+			"*.stly",
 			""
 		]
 	},
@@ -758,6 +684,15 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"this.update_value",
+			"button",
+			"notes",
+			"'",
+			"{style.",
+			"this.state",
+			"params",
+			"\"",
+			"@import",
 			"os",
 			"os.",
 			"os",
@@ -788,82 +723,24 @@
 	"groups":
 	[
 		{
-			"selected": 3,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "src/components/App/index.js",
+					"file": "frontend/src/components/CountDowns/form.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1269,
+						"buffer_size": 1632,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								803,
-								803
-							]
-						],
-						"settings":
-						{
-							"history_list_is_closing": true,
-							"syntax": "Packages/JSX/JSX.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 9,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "src/index.styl",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 198,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								134,
-								138
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Stylus/Stylus.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "src/pages/Home/index.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 490,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								437,
-								437
+								1629,
+								1629
 							]
 						],
 						"settings":
@@ -873,68 +750,40 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 179.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "src/components/CountDowns/item.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 771,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								580,
-								580
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JSX/JSX.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
+					"stack_index": 0,
 					"type": "text"
 				}
 			]
 		},
 		{
-			"selected": 2,
+			"selected": 0,
 			"sheets":
 			[
 				{
-					"buffer": 4,
-					"file": "countdown.py",
+					"buffer": 1,
+					"file": "frontend/src/components/CountDowns/index.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 541,
+						"buffer_size": 939,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								541,
-								541
+								293,
+								293
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Python/Python.sublime-syntax"
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -942,158 +791,13 @@
 					},
 					"stack_index": 1,
 					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "Dockerfile",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 336,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								259,
-								259
-							]
-						],
-						"settings":
-						{
-							"auto_name": "FROM python:2.7",
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "docker-compose.yml",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 309,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								103,
-								103
-							]
-						],
-						"settings":
-						{
-							"auto_name": "version: '2'",
-							"syntax": "Packages/YAML/YAML.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 571,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "config.cfg",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 87,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								86,
-								86
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "Pipfile",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 184,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
 				}
 			]
 		}
 	],
 	"incremental_find":
 	{
-		"height": 26.0
+		"height": 27.0
 	},
 	"input":
 	{
@@ -1141,7 +845,7 @@
 	"project": "countdown-pwa.sublime-project",
 	"replace":
 	{
-		"height": 48.0
+		"height": 50.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -1151,12 +855,108 @@
 		"selected_items":
 		[
 			[
-				"pip",
-				"Pipfile"
+				"countdownsind",
+				"frontend/src/components/CountDowns/index.js"
+			],
+			[
+				"nav",
+				"frontend/src/components/Nav/index.js"
+			],
+			[
+				"componcoundind",
+				"frontend/src/components/CountDowns/index.styl"
+			],
+			[
+				"show.j",
+				"frontend/src/components/CountDowns/show.js"
+			],
+			[
+				"colors",
+				"frontend/src/colors.styl"
+			],
+			[
+				"timerst",
+				"frontend/src/components/Timer/index.styl"
+			],
+			[
+				"timer",
+				"frontend/src/components/Timer/index.js"
+			],
+			[
+				"newind",
+				"frontend/src/pages/CountDowns/New/index.styl"
 			],
 			[
 				"item",
-				"src/components/CountDowns/item.js"
+				"frontend/src/components/CountDowns/item.js"
+			],
+			[
+				"app",
+				"frontend/src/components/App/index.js"
+			],
+			[
+				"countdownshow",
+				"frontend/src/components/CountDowns/show.js"
+			],
+			[
+				"countdownsnew",
+				"frontend/src/pages/CountDowns/New/index.js"
+			],
+			[
+				"colo",
+				"frontend/src/colors.styl"
+			],
+			[
+				"color",
+				"frontend/src/colors.styl"
+			],
+			[
+				"timerstyl",
+				"frontend/src/components/Timer/index.styl"
+			],
+			[
+				"navstyl",
+				"frontend/src/components/Nav/index.styl"
+			],
+			[
+				"pack",
+				"frontend/package.json"
+			],
+			[
+				"countdosty",
+				"frontend/src/components/CountDowns/index.styl"
+			],
+			[
+				"show",
+				"frontend/src/components/CountDowns/show.js"
+			],
+			[
+				"itemjs",
+				"frontend/src/components/CountDowns/item.js"
+			],
+			[
+				"dockerco",
+				"docker-compose.yml"
+			],
+			[
+				"countdowpy",
+				"python/countdown.py"
+			],
+			[
+				"home",
+				"frontend/src/pages/Home/index.js"
+			],
+			[
+				"appind",
+				"frontend/src/components/App/index.js"
+			],
+			[
+				"coundownstyl",
+				"frontend/src/components/CountDowns/index.styl"
+			],
+			[
+				"pip",
+				"Pipfile"
 			],
 			[
 				"lib",
@@ -1171,14 +971,6 @@
 				"src/pages/Home/index.styl"
 			],
 			[
-				"home",
-				"src/pages/Home/index.js"
-			],
-			[
-				"nav",
-				"src/components/Nav/index.styl"
-			],
-			[
 				"navind",
 				"src/components/Nav/index.js"
 			],
@@ -1187,16 +979,8 @@
 				"src/index.styl"
 			],
 			[
-				"app",
-				"src/components/App/index.styl"
-			],
-			[
 				"homestyl",
 				"src/pages/Home/index.styl"
-			],
-			[
-				"timerst",
-				"src/components/Timer/index.styl"
 			],
 			[
 				"countdownindexstyl",
@@ -1207,24 +991,12 @@
 				"src/pages/Home/index.styl"
 			],
 			[
-				"timer",
-				"src/components/Timer/index.js"
-			],
-			[
 				"homeind",
 				"src/pages/Home/index.styl"
 			],
 			[
 				"countdownnew",
 				"src/pages/CountDowns/New/index.js"
-			],
-			[
-				"navstyl",
-				"src/components/Nav/index.styl"
-			],
-			[
-				"appind",
-				"src/components/App/index.js"
 			],
 			[
 				"nav/ind",
@@ -1593,74 +1365,6 @@
 			[
 				"objfighother",
 				"objects/obj_fighter/Other_7.gml"
-			],
-			[
-				"objattas",
-				"objects/obj_attack/Step_1.gml"
-			],
-			[
-				"fighter",
-				"objects/obj_fighter/Step_0.gml"
-			],
-			[
-				"fighterini",
-				"scripts/init_fighter/init_fighter.gml"
-			],
-			[
-				"fightercreate",
-				"objects/obj_fighter/Create_0.gml"
-			],
-			[
-				"markjson",
-				"datafiles/fighters/marketing.json"
-			],
-			[
-				"markecrea",
-				"objects/obj_marketing/Create_0.gml"
-			],
-			[
-				"mr",
-				"mrFutoMaki.yyp"
-			],
-			[
-				"yyp",
-				"mrFutoMaki.yyp"
-			],
-			[
-				"con",
-				"scripts/scr_initializeGameController/scr_initializeGameController.gml"
-			],
-			[
-				"scr_PlayerStateFalling",
-				"scripts/scr_PlayerStateFalling/scr_PlayerStateFalling.gml"
-			],
-			[
-				"scr_PlayerStateJumping",
-				"scripts/scr_PlayerStateJumping/scr_PlayerStateJumping.gml"
-			],
-			[
-				"on_w",
-				"scripts/on_wall/on_wall.gml"
-			],
-			[
-				"onf",
-				"scripts/on_floor/on_floor.gml"
-			],
-			[
-				"fal",
-				"scripts/scr_PlayerStateFalling/scr_PlayerStateFalling.gml"
-			],
-			[
-				"src_Playstateon",
-				"scripts/scr_PlayerStateOnGround/scr_PlayerStateOnGround.gml"
-			],
-			[
-				".yyp",
-				"mrFutoMaki.yyp"
-			],
-			[
-				"add",
-				"scripts/add_attack_obj/add_attack_obj.gml"
 			]
 		],
 		"width": 0.0
@@ -1687,14 +1391,14 @@
 		],
 		"width": 392.0
 	},
-	"selected_group": 1,
+	"selected_group": 0,
 	"settings":
 	{
 	},
 	"show_minimap": true,
 	"show_open_files": false,
 	"show_tabs": true,
-	"side_bar_visible": true,
+	"side_bar_visible": false,
 	"side_bar_width": 219.0,
 	"status_bar_visible": true,
 	"template_settings":

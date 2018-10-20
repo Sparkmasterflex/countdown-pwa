@@ -4,12 +4,9 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-flask-cors = "*"
-flask = "*"
-pymongo = "*"
-python-dateutil = "*"
+"ciso8601" = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "2.7.14"
+python_version = "2.7"
