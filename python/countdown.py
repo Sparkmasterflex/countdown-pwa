@@ -97,7 +97,8 @@ def create():
       "day": date.day,
       "hour": date.hour,
       "minute": date.minute
-    }
+    },
+    "happens_at": date
   }
   db.countdowns.insert_one(countdown)
 
