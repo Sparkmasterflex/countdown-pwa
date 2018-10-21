@@ -10,6 +10,8 @@ export default class Show extends React.Component {
   }
 
   render() {
+    let t = new Date();
+    let min_date = `${t.getFullYear()}-${t.getMonth()+1}-${t.getDate()}T${t.getHours()}:${t.getMinutes()}:00.0`;
     return(
       <form>
         <div className={style.field}>
@@ -17,7 +19,13 @@ export default class Show extends React.Component {
         </div>
 
         <div className={style.field}>
-          <input onChange={this.update_value.bind(this)} type='datetime-local' name='date' placeholder='Event Date and Time' />
+          <input
+            onChange={this.update_value.bind(this)}
+            type='datetime-local'
+            name='date'
+            placeholder='Event Date and Time'
+            min={min_date}
+          />
         </div>
 
         <div className={style.field}>
@@ -43,7 +51,6 @@ export default class Show extends React.Component {
   }
 
   save(e) {
-    console.log(JSON.stringify(this.state));
     fetch("http://localhost:5000/countdown/create", {
       method: "POST",
       mode: "cors",
