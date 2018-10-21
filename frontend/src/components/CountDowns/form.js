@@ -14,6 +14,7 @@ export default class Show extends React.Component {
     let min_date = `${t.getFullYear()}-${t.getMonth()+1}-${t.getDate()}T${t.getHours()}:${t.getMinutes()}:00.0`;
     return(
       <form>
+        {this.render_errors()}
         <div className={style.field}>
           <input onChange={this.update_value.bind(this)} type='text' name='name' placeholder='Countdown for...' />
         </div>
@@ -40,6 +41,27 @@ export default class Show extends React.Component {
     );
   }
 
+  render_errors() {
+    if(this.state.errors) {
+      var errors = this.state.errors;
+      return(
+        <ul className={style.errors}>
+
+          { Object.keys(errors).map( (attr) => {
+            var k = `error-${attr}`;
+            return(<li key={k}>{errors[attr]}</li>)
+          }) }
+        </ul>
+      )
+    } else {
+      return "";
+    }
+  }
+
+  date_string(t) {
+    return `${t.getFullYear()}-${t.getMonth()+1}-${t.getDate()}T${t.getHours()}:${t.getMinutes()}:00.0`;
+  }
+
   update_value(e) {
     var field  = e.target,
         attr   = field.getAttribute('name'),
@@ -47,7 +69,24 @@ export default class Show extends React.Component {
         update = {};
     update[attr] = val;
 
-    this.setState(update, () => { console.log(this.state) });
+    if(attr == 'date') {
+      var dt = new Date(val),
+          today = new Date();
+
+      if(dt < today) {
+        today.setDate(today.getDate() + 1);
+        var dt_str = this.date_string(today),
+            err = {};
+        field.value = dt_str;
+        update[attr] = dt_str;
+        err[attr] = "Must be a future date"
+        update.errors = err;
+      } else {
+        update.errors = null;
+      }
+    }
+
+    this.setState(update);
   }
 
   save(e) {
