@@ -72,7 +72,8 @@ def set_allow_origin(resp):
 @app.route("/")
 def countdowns():
   countdowns = []
-  for countdown in db.countdowns.find():
+  now = datetime.now()
+  for countdown in db.countdowns.find( { "happens_at": {"$gt": now} } ):
     countdown.pop("_id", None)
     countdowns.append(countdown)
 
