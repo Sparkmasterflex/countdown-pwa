@@ -12,6 +12,7 @@ const load = loader => Loadable({ loader, loading });
 
 const Home = load(() => import('@pages/Home'));
 const CountDownNew = load(() => import('@pages/CountDowns/New'));
+const CountDownEdit = load(() => import('@pages/CountDowns/Edit'));
 const CountDownShow = load(() => import('@pages/CountDowns/Show'));
 
 class App extends React.Component {
@@ -32,6 +33,7 @@ class App extends React.Component {
 				<main className={ style.wrapper }>
 					<Route path="/" exact component={ Home } />
 					<Route path="/countdowns/new" exact component={ CountDownNew } />
+					<Route exact path="/:slug/edit" component={ CountDownEdit } />
 					<Route exact path="/:slug" component={ CountDownShow } />
 				</main>
 				<Nav current={this.props.match} />

@@ -1,8 +1,8 @@
 import React from 'react';
 import { HMR } from '@pwa/preset-react';
 import { Link } from 'react-router-dom';
-import NewForm from '@components/CountDowns/form';
-import style from './index.styl';
+import NewForm from '@components/CountDowns/new-form';
+import style from '../index.styl';
 
 function CountDownNew() {
   return (
