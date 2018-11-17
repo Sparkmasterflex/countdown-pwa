@@ -80,7 +80,6 @@ export default class NewForm extends React.Component {
   update_attributes(attr, value) {
     var countdown = this.state.countdown;
     countdown[attr] = value;
-    console.log(this.state.countdown);
     this.setState(countdown: countdown);
   }
 
@@ -88,7 +87,7 @@ export default class NewForm extends React.Component {
   //      EVENTS
   //====================\\
   save(e) {
-    fetch("http://localhost:5000/countdown/create", {
+    fetch("http://localhost:5000/create", {
       method: "POST",
       mode: "cors",
       headers: {

@@ -15,7 +15,7 @@ export default class Show extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`http://localhost:5000/countdowns/${this.props.slug}`)
+    fetch(`http://localhost:5000/${this.props.slug}`)
       .then(response => response.json())
       .then(data => this.setState( {data} ));
   }

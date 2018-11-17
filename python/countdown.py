@@ -1,5 +1,6 @@
 import pprint
 from flask import Flask, jsonify, request
+from flask_restful import Resource, Api
 from flask_cors import CORS, cross_origin
 from pymongo import MongoClient
 from datetime import datetime
@@ -28,6 +29,7 @@ if count == 0:
 
 
 app = Flask(__name__)
+api = Api(app)
 
 cors = CORS(app, resources={r"*": {"origins": "*"}})
 
@@ -69,47 +71,59 @@ def set_allow_origin(resp):
 
   return resp
 
-@app.route("/")
-def countdowns():
-  countdowns = []
-  now = datetime.now()
-  for countdown in db.countdowns.find( { "happens_at": {"$gt": now} } ):
+class CountDown(Resource):
+  @cross_origin()
+  def get(self, slug = None):
+    if slug:
+      countdown = db.countdowns.find_one({"slug": slug})
+      countdown.pop("_id", None)
+      return jsonify(countdown)
+    else:
+      countdowns = []
+      now = datetime.now()
+      for countdown in db.countdowns.find( { "happens_at": {"$gt": now} } ):
+        countdown.pop("_id", None)
+        countdowns.append(countdown)
+
+      return jsonify(countdowns)
+
+  @cross_origin()
+  def post(self):
+    data = request.get_json()
+
+    date = dateutil.parser.parse(data['date'])
+    slug = data['name'].lower()
+    slug = re.sub(r"[^a-zA-Z\d\s:]", "-", slug)
+
+    countdown = {
+      "name": data['name'],
+      "slug": slug,
+      "description": data['description'],
+      "when": {
+        "year": date.year,
+        "month": date.month,
+        "day": date.day,
+        "hour": date.hour,
+        "minute": date.minute
+      },
+      "happens_at": date
+    }
+    db.countdowns.insert_one(countdown)
     countdown.pop("_id", None)
-    countdowns.append(countdown)
+    return jsonify(countdown)
 
-  return jsonify(countdowns)
-
-@app.route("/countdown/create", methods=['POST'])
-def create():
-  data = request.get_json()
-
-  date = dateutil.parser.parse(data['date'])
-  slug = data['name'].lower()
-  slug = re.sub(r"[^a-zA-Z\d\s:]", "-", slug)
-
-  countdown = {
-    "name": data['name'],
-    "slug": slug,
-    "description": data['description'],
-    "when": {
-      "year": date.year,
-      "month": date.month,
-      "day": date.day,
-      "hour": date.hour,
-      "minute": date.minute
-    },
-    "happens_at": date
-  }
-  db.countdowns.insert_one(countdown)
-
-  return jsonify({"bob": "saget"})
+api.add_resource(CountDown,
+  '/',
+  '/<string:slug>',
+  '/create'
+)
 
 
-@app.route("/countdowns/<slug>")
-def countdown(slug):
-  countdown = db.countdowns.find_one({"slug": slug})
-  countdown.pop("_id", None)
-  return jsonify(countdown)
+# @app.route("/countdown/create", methods=['POST'])
+# def create():
+
+# @app.route("/countdowns/<slug>")
+# def countdown(slug):
 
 if __name__ == "__main__":
   app.run(host='0.0.0.0')
