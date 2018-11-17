@@ -1,5 +1,6 @@
 import React from 'react';
 import Item from '@components/CountDowns/item';
+import GooseEgg from '@components/App/goose-egg';
 
 import style from './index.styl';
 
@@ -35,12 +36,12 @@ export default class CountDowns extends React.Component {
   }
 
   render_countdowns() {
-    if(this.state.data) {
+    if(this.state.data && this.state.data.length) {
       return this.state.data.map( (item, index) => {
         return <Item key={item.slug} data={item} index={index} />
       } );
     } else {
-      return "";
+      return <GooseEgg />
     }
   }
 }
