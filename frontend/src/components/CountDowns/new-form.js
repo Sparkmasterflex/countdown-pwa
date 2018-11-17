@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 import Form from '@components/CountDowns/form';
 
@@ -15,26 +15,32 @@ export default class NewForm extends React.Component {
   }
 
   render() {
-    return(
-      <form>
-        {this.render_errors()}
-        <Form
-          countdown={this.state.countdown || {}}
-          append_error={this.append_error.bind(this)}
-          update={this.update_attributes.bind(this)}
-        />
-        <div className={style.buttons}>
-          <button
-            onClick={this.save.bind(this)}
-            type='button'
-            className={style.button}
-          >
-            Create
-          </button>
-          <Link to='/' className={style.cancel}>Cancel</Link>
-        </div>
-      </form>
-    )
+    let { slug } = this.state.countdown;
+    if(slug) {
+      let path = `/${slug}`;
+      return(<Redirect to={path} />);
+    } else {
+      return(
+        <form>
+          {this.render_errors()}
+          <Form
+            countdown={this.state.countdown || {}}
+            append_error={this.append_error.bind(this)}
+            update={this.update_attributes.bind(this)}
+          />
+          <div className={style.buttons}>
+            <button
+              onClick={this.save.bind(this)}
+              type='button'
+              className={style.button}
+            >
+              Create
+            </button>
+            <Link to='/' className={style.cancel}>Cancel</Link>
+          </div>
+        </form>
+      )
+    }
   }
 
   render_errors() {
@@ -97,7 +103,7 @@ export default class NewForm extends React.Component {
     })
     .then(resp => resp.json())
     .then(data => {
-
+      this.setState({countdown: data})
     })
   }
 }
