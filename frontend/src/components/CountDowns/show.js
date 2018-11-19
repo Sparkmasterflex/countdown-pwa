@@ -1,5 +1,10 @@
 import React from 'react';
-import Timer from '@components/Timer';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit } from '@fortawesome/free-solid-svg-icons'
+
+import Timer    from '@components/Timer';
+import GooseEgg from '@components/App/goose-egg';
 
 import json from '../../lib/data.json';
 
@@ -41,18 +46,22 @@ export default class Show extends React.Component {
     if(this.state.data) {
       var data = this.state.data,
           when = data.when,
-          date = new Date(when.year, (when.month-1), when.day, when.hour, when.minute);
+          date = new Date(when.year, (when.month-1), when.day, when.hour, when.minute),
+          edit_path = `/${data.slug}/edit`;
 
       return(
         <div className={style.show}>
-          <h1>{data.name}</h1>
+          <h1>
+            {data.name}
+            <Link to={edit_path}><FontAwesomeIcon icon={faEdit} /></Link>
+          </h1>
           <p>{data.description}</p>
           <Timer size="large" when={date} />
           <div className={style.altdate}>{this.format(date)}</div>
         </div>
       );
     } else {
-      return "";
+      return <GooseEgg />;
     }
   }
 
