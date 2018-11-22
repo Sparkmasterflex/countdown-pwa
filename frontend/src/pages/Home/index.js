@@ -1,5 +1,4 @@
 import React from 'react';
-import Code from '@components/Code';
 import { HMR } from '@pwa/preset-react';
 import Window from '@components/Window';
 import CountDowns from '@components/CountDowns';
