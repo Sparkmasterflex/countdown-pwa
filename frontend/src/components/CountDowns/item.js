@@ -17,7 +17,13 @@ export default class Item extends React.Component {
         path = `/${this.state.slug}`
 
     return(
-      <Link to={path} className={style.item}>
+      <Link
+        to={{
+          pathname: path,
+          state: this.state
+        }}
+        className={style.item}
+      >
         <div className={style.title}>{this.state.name}</div>
         <div className={style.date}>{this.format(date)}</div>
         <Timer size="normal" when={date} />

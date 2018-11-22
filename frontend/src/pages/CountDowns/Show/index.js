@@ -5,7 +5,10 @@ import CountDown from '@components/CountDowns/show';
 
 function CountDownShow(page_obj) {
   return (
-    <CountDown slug={page_obj.match.params.slug} />
+    <CountDown
+      slug={page_obj.match.params.slug}
+      countdown={page_obj.location.state}
+    />
   )
 }
 

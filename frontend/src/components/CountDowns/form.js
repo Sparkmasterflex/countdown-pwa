@@ -6,12 +6,19 @@ import style from './index.styl';
 export default class Form extends React.Component {
 
   render() {
+    let cd = this.props.countdown
     let t = new Date();
-    let tmrw = this.props.countdown['date'];
+    let tmrw = cd['date'];
     return(
       <div>
         <div className={style.field}>
-          <input onChange={this.update_value.bind(this)} type='text' name='name' placeholder='Countdown for...' />
+          <input
+            onChange={this.update_value.bind(this)}
+            type='text'
+            name='name'
+            defaultValue={cd['name']}
+            placeholder='Countdown for...'
+          />
         </div>
 
         <div className={style.field}>
@@ -25,7 +32,12 @@ export default class Form extends React.Component {
         </div>
 
         <div className={style.field}>
-          <textarea onChange={this.update_value.bind(this)} name='description' placeholder='Description'></textarea>
+          <textarea
+            onChange={this.update_value.bind(this)}
+            name='description'
+            placeholder='Description'
+            defaultValue={cd['description']}
+          ></textarea>
         </div>
 
       </div>

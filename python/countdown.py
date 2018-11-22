@@ -89,13 +89,36 @@ class CountDown(Resource):
 
   @cross_origin()
   def post(self):
-    data = request.get_json()
+    countdown = self.__build_data( request.get_json() )
+    db.countdowns.insert_one( countdown )
+    countdown.pop("_id", None)
+    return jsonify(countdown)
 
+  @cross_origin()
+  def put(self, slug = None):
+    pprint.pprint(slug)
+    cd = db.countdowns.find_one({"slug": slug})
+    pprint.pprint(cd.pop("_id", None))
+    if slug and cd:
+      pprint.pprint('slug and countdown')
+      countdown = self.__build_data( request.get_json() )
+      db.countdowns.update_one( {'slug': countdown['slug']}, {'$set': countdown} )
+
+      countdown.pop("_id", None)
+      return jsonify(countdown)
+    else:
+      return jsonify({'fail': True})
+
+
+  def __build_data(self, data):
     date = dateutil.parser.parse(data['date'])
-    slug = data['name'].lower()
-    slug = re.sub(r"[^a-zA-Z\d\s:]", "-", slug)
+    if data['slug'] == None:
+      sl = data['name'].lower()
+      slug = re.sub(r"[^a-zA-Z\d]", "-", sl)
+    else:
+      slug = data['slug']
 
-    countdown = {
+    return {
       "name": data['name'],
       "slug": slug,
       "description": data['description'],
@@ -108,14 +131,14 @@ class CountDown(Resource):
       },
       "happens_at": date
     }
-    db.countdowns.insert_one(countdown)
-    countdown.pop("_id", None)
-    return jsonify(countdown)
+
+
 
 api.add_resource(CountDown,
   '/',
   '/<string:slug>',
-  '/create'
+  '/create',
+  '/<string:slug>/update'
 )
 
 

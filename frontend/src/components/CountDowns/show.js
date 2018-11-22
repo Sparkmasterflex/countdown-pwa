@@ -15,7 +15,7 @@ export default class Show extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: null,
+      data: props.countdown
     };
   }
 
@@ -53,7 +53,12 @@ export default class Show extends React.Component {
         <div className={style.show}>
           <h1>
             {data.name}
-            <Link to={edit_path}><FontAwesomeIcon icon={faEdit} /></Link>
+            <Link
+              to={{
+                pathname: edit_path,
+                state: data
+              }}
+            ><FontAwesomeIcon icon={faEdit} /></Link>
           </h1>
           <p>{data.description}</p>
           <Timer size="large" when={date} />
