@@ -69,7 +69,7 @@ export default class NewForm extends React.Component {
     return {
       name: "",
       description: "",
-      happens_at: new Date(tmrw)
+      date: new Date(tmrw)
     }
   }
 
