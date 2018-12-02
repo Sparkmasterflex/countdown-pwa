@@ -88,7 +88,6 @@ export default class EditForm extends React.Component {
   //====================\\
   update(e) {
     let url = `http://localhost:5000/${this.state.slug}/update`;
-    console.log(url)
 
     fetch(url, {
       method: "PUT",

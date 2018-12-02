@@ -90,17 +90,16 @@ class CountDown(Resource):
   @cross_origin()
   def post(self):
     countdown = self.__build_data( request.get_json() )
+    pprint.pprint(countdown)
     db.countdowns.insert_one( countdown )
     countdown.pop("_id", None)
     return jsonify(countdown)
 
   @cross_origin()
   def put(self, slug = None):
-    pprint.pprint(slug)
     cd = db.countdowns.find_one({"slug": slug})
-    pprint.pprint(cd.pop("_id", None))
+
     if slug and cd:
-      pprint.pprint('slug and countdown')
       countdown = self.__build_data( request.get_json() )
       db.countdowns.update_one( {'slug': countdown['slug']}, {'$set': countdown} )
 
@@ -109,14 +108,19 @@ class CountDown(Resource):
     else:
       return jsonify({'fail': True})
 
+  @cross_origin()
+  def delete(self, slug = None):
+    if slug:
+      db.countdowns.delete_one({"slug": slug})
+      return jsonify({"deleted": True})
 
   def __build_data(self, data):
     date = dateutil.parser.parse(data['date'])
-    if data['slug'] == None:
+    if 'slug' in data and data['slug'] != "":
+      slug = data['slug']
+    else:
       sl = data['name'].lower()
       slug = re.sub(r"[^a-zA-Z\d]", "-", sl)
-    else:
-      slug = data['slug']
 
     return {
       "name": data['name'],
@@ -138,9 +142,10 @@ api.add_resource(CountDown,
   '/',
   '/<string:slug>',
   '/create',
-  '/<string:slug>/update'
+  '/<string:slug>/update',
+  '/<string:slug>/delete'
 )
-
+# abort(404, message="Todo {} doesn't exist".format(todo_id))
 
 # @app.route("/countdown/create", methods=['POST'])
 # def create():

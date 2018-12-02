@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit } from '@fortawesome/free-solid-svg-icons'
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
 
 import Timer    from '@components/Timer';
 import GooseEgg from '@components/App/goose-egg';
@@ -43,6 +43,10 @@ export default class Show extends React.Component {
   }
 
   render_countdown() {
+    if(this.state.deleted) {
+      return(<Redirect to='/' />);
+    }
+
     if(this.state.data) {
       var data = this.state.data,
           when = data.when,
@@ -59,6 +63,7 @@ export default class Show extends React.Component {
                 state: data
               }}
             ><FontAwesomeIcon icon={faEdit} /></Link>
+            <a className={style.delete} href="#delete" onClick={this.delete.bind(this)}><FontAwesomeIcon icon={faTrash} /></a>
           </h1>
           <p>{data.description}</p>
           <Timer size="large" when={date} />
@@ -77,5 +82,24 @@ export default class Show extends React.Component {
     year = date.getFullYear();
 
     return `${month} ${day}, ${year}`;
+  }
+
+  delete(e) {
+    e.preventDefault();
+    var cd = this.state.data;
+    let msg = `Deleting "${cd.name}". Are you sure?`;
+    let url = `http://localhost:5000/${cd.slug}/delete`;
+
+    if(confirm(msg)) {
+      fetch(url, {
+        method: "DELETE",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json; charset=utf-8"
+        }
+      })
+      .then(resp => resp.json())
+      .then(data => { this.setState({ deleted: data.deleted }) })
+    }
   }
 }
